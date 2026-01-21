@@ -30,6 +30,7 @@ public class Main {
         } catch (SQLException e) {
             System.out.println("Error while connecting to database:");
             e.printStackTrace();
+
         }
     }
 }
