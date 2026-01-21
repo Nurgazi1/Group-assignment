@@ -13,7 +13,7 @@ public class DatabaseConnection {
             "postgres.axcgckktfembduyzkvrs";
 
     private static final String PASSWORD =
-            "AituDb_2026!";
+            "Era_2008";
 
     private DatabaseConnection() {}
 
