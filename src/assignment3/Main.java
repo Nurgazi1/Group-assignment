@@ -7,6 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import assignment3.database.db.PostgresDatabase;
+import assignment3.Entities.Orders;
+import assignment3.repositories.OrderRepository;
+import assignment3.repositoryImpl.OrderRepositoryImpl;
+import assignment3.service.OrderService;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -32,5 +38,16 @@ public class Main {
             e.printStackTrace();
 
         }
+
+
+
+        OrderRepository repo = new OrderRepositoryImpl(new PostgresDatabase());
+        OrderService service = new OrderService(repo);
+
+        Orders order = new Orders(1, 1, "NEW");
+        service.placeOrder(order);
+        service.completeOrder(1);
+
+        System.out.println("Order created and completed successfully");
     }
 }
