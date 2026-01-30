@@ -12,8 +12,8 @@ public class MenuItem {
         this.price = price;
         this.available = available;
     }
-
-    public boolean isAvailable() {
-        return available;
-    }
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public double getPrice() { return price; }
+    public boolean isAvailable() { return available; }
 }
