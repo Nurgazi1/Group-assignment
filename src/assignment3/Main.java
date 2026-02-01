@@ -1,20 +1,16 @@
 package assignment3;
 
-import assignment3.DatabaseConnection;
 import assignment3.database.db.PostgresDatabase;
-import assignment3.Entities.MenuItem;
 import assignment3.Entities.Orders;
 import assignment3.repositories.OrderRepository;
-import assignment3.repositories.MenuItemRepository;
 import assignment3.repositoryImpl.OrderRepositoryImpl;
-import assignment3.repositoryImpl.MenuItemRepositoryImpl;
 import assignment3.service.OrderService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -37,6 +33,9 @@ public class Main {
             e.printStackTrace();
         }
 
+
+
+
         OrderRepository repo = new OrderRepositoryImpl(new PostgresDatabase());
         OrderService service = new OrderService(repo);
 
@@ -46,17 +45,6 @@ public class Main {
 
         System.out.println("Order created and completed successfully");
 
-        MenuItemRepository menuRepo = new MenuItemRepositoryImpl();
-        List<MenuItem> menu = menuRepo.findAll();
 
-        System.out.println("\n=== MENU FROM DATABASE ===");
-        for (MenuItem item : menu) {
-            System.out.println(
-                    item.getId() + " | " +
-                            item.getName() + " | " +
-                            item.getPrice() + " | available: " +
-                            item.isAvailable()
-            );
-        }
     }
 }
