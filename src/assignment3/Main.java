@@ -37,6 +37,9 @@ public class Main {
             e.printStackTrace();
         }
 
+
+
+
         OrderRepository repo = new OrderRepositoryImpl(new PostgresDatabase());
         OrderService service = new OrderService(repo);
 
@@ -45,19 +48,6 @@ public class Main {
         service.completeOrder(1);
 
         System.out.println("Order created and completed successfully");
-
-        MenuItemRepository menuRepo = new MenuItemRepositoryImpl();
-        List<MenuItem> menu = menuRepo.findAll();
-
-        System.out.println("\n=== MENU FROM DATABASE ===");
-        for (MenuItem item : menu) {
-            System.out.println(
-                    item.getId() + " | " +
-                            item.getName() + " | " +
-                            item.getPrice() + " | available: " +
-                            item.isAvailable()
-            );
-        }
 
 
     }

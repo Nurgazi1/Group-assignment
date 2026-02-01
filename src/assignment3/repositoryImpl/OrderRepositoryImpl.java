@@ -6,6 +6,9 @@ import assignment3.repositories.OrderRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderRepositoryImpl implements OrderRepository {
 
@@ -38,5 +41,28 @@ public class OrderRepositoryImpl implements OrderRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<Orders> findAll() {
+        List<Orders> orders = new ArrayList<>();
+
+        try (Connection con = db.getConnection()) {
+            String sql = "SELECT * FROM orders";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                orders.add(new Orders(
+                        rs.getInt("id"),
+                        rs.getInt("customer_id"),
+                        rs.getString("status")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return orders;
     }
 }
