@@ -14,4 +14,12 @@ public class Orders {
     public int getId() {
         return id;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
 }
