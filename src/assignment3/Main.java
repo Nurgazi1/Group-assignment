@@ -37,7 +37,6 @@ public class Main {
             e.printStackTrace();
         }
 
-        // ===== ORDERS PART (у тебя уже было, оставляем) =====
         OrderRepository repo = new OrderRepositoryImpl(new PostgresDatabase());
         OrderService service = new OrderService(repo);
 
@@ -47,7 +46,6 @@ public class Main {
 
         System.out.println("Order created and completed successfully");
 
-        // ===== MENU OUTPUT PART (ВОТ ЧТО ТЫ ПРОСИЛ) =====
         MenuItemRepository menuRepo = new MenuItemRepositoryImpl();
         List<MenuItem> menu = menuRepo.findAll();
 
@@ -60,5 +58,7 @@ public class Main {
                             item.isAvailable()
             );
         }
+
+
     }
 }
