@@ -35,14 +35,6 @@ public class Main {
 
 
 
-
-        OrderRepository repo = new OrderRepositoryImpl(new PostgresDatabase());
-        OrderService service = new OrderService(repo);
-
-        Orders order = new Orders(1, 1, "NEW");
-        service.placeOrder(order);
-        service.completeOrder(1);
-
         System.out.println("Order created and completed successfully");
 
 
