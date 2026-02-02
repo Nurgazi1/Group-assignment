@@ -113,7 +113,7 @@ public class FoodSystem {
         System.out.println("\n=== AVAILABLE MENU ITEMS ===");
 
         menu.stream()
-                .filter(MenuItem::isAvailable) // ✅ lambda/stream requirement
+                .filter(MenuItem::isAvailable)
                 .forEach(item -> System.out.println(
                         item.getId() + " | " + item.getName() + " | " + item.getPrice()
                 ));
