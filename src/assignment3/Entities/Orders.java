@@ -11,15 +11,37 @@ public class Orders {
         this.status = status;
     }
 
-    public int getId() {
-        return id;
+    public int getId() { return id; }
+    public String getStatus() { return status; }
+    public int getCustomerId() { return customerId; }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public String getStatus() {
-        return status;
-    }
+    public static class Builder {
+        private int id;
+        private int customerId;
+        private String status;
 
-    public int getCustomerId() {
-        return customerId;
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder customerId(int customerId) {
+            this.customerId = customerId;
+            return this;
+        }
+
+        public Builder status(String status) {
+            this.status = status;
+            return this;
+        }
+
+        public Orders build() {
+            return new Orders(id, customerId, status);
+        }
     }
 }
+
