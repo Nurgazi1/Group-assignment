@@ -6,10 +6,12 @@ import assignment3.Entities.Orders;
 import assignment3.database.db.IDatabase;
 import assignment3.database.db.PostgresDatabase;
 import assignment3.repositories.CustomerRepository;
+import assignment3.repositories.OrderItemRepository;
 import assignment3.repositories.OrderRepository;
 import assignment3.repositories.MenuItemRepository;
 import assignment3.repositoryImpl.CustomerRepositoryImpl;
 import assignment3.repositoryImpl.MenuItemRepositoryImpl;
+import assignment3.repositoryImpl.OrderItemRepositoryimpl;
 import assignment3.repositoryImpl.OrderRepositoryImpl;
 
 import java.util.List;
@@ -26,6 +28,10 @@ public class FoodSystem {
 
     CustomerRepository customerRepo =
             new CustomerRepositoryImpl(new PostgresDatabase());
+
+    OrderItemRepository orderItemRepo =
+            new OrderItemRepositoryimpl(new PostgresDatabase());
+
 
 
 
@@ -81,6 +87,22 @@ public class FoodSystem {
     }
 
     private void PrintAllOrderItems() {
+        var items = orderItemRepo.findAll();
+
+        if (items.isEmpty()) {
+            System.out.println("No order items.");
+            return;
+        }
+
+        System.out.println("\n=== ORDER ITEMS ===");
+        items.forEach(item ->
+                System.out.println(
+                        "Order #" + item.getOrderId() +
+                                " | MenuItem #" + item.getMenuItemId() +
+                                " | Qty: " + item.getQuantity()
+                )
+        );
+        System.out.println();
     }
 
     private void PrintAllMenuItems() {
