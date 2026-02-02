@@ -1,20 +1,16 @@
 package assignment3;
 
-import assignment3.DatabaseConnection;
 import assignment3.database.db.PostgresDatabase;
-import assignment3.Entities.MenuItem;
 import assignment3.Entities.Orders;
 import assignment3.repositories.OrderRepository;
-import assignment3.repositories.MenuItemRepository;
 import assignment3.repositoryImpl.OrderRepositoryImpl;
-import assignment3.repositoryImpl.MenuItemRepositoryImpl;
 import assignment3.service.OrderService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
+
 
 public class Main {
     public static void main(String[] args) {
