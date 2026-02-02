@@ -8,20 +8,14 @@ public class OrderItem {
 
     public OrderItem(int id, int orderId, int menuItemId, int quantity) {
         this.id = id;
-        this.menuItemId = menuItemId;
         this.orderId = orderId;
+        this.menuItemId = menuItemId;
         this.quantity = quantity;
     }
 
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public int getMenuItemId() {
-        return menuItemId;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
+    public int getId() { return id; }
+    public int getOrderId() { return orderId; }
+    public int getMenuItemId() { return menuItemId; }
+    public int getQuantity() { return quantity; }
 }
+//e

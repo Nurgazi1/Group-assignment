@@ -1,8 +1,8 @@
 package assignment3.repositories;
 
 import assignment3.Entities.MenuItem;
-import java.util.List;
+import assignment3.core.Repository;
 
-public interface MenuItemRepository {
-    List<MenuItem> findAll();
+public interface MenuItemRepository extends Repository<MenuItem> {
 }
+//e

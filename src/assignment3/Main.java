@@ -37,6 +37,11 @@ public class Main {
 
         System.out.println("Order created and completed successfully");
 
-
+//e
     }
+    Orders order = Orders.builder()
+            .id(1)
+            .customerId(1)
+            .status("NEW")
+            .build();
 }

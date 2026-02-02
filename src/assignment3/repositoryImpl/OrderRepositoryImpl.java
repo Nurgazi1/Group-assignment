@@ -21,11 +21,15 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public void save(Orders order) {
         try (Connection con = db.getConnection()) {
+
             String sql = "INSERT INTO orders(customer_id, status) VALUES (?, ?)";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, order.getId());
-            ps.setString(2, "NEW");
+
+            ps.setInt(1, order.getCustomerId());
+            ps.setString(2, order.getStatus());
+
             ps.execute();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -34,10 +38,12 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public void complete(int orderId) {
         try (Connection con = db.getConnection()) {
-            String sql = "UPDATE orders SET status='COMPLETED' WHERE id=?";
+
+            String sql = "UPDATE orders SET status = 'COMPLETED' WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, orderId);
             ps.execute();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,6 +54,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         List<Orders> orders = new ArrayList<>();
 
         try (Connection con = db.getConnection()) {
+
             String sql = "SELECT * FROM orders";
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -59,6 +66,7 @@ public class OrderRepositoryImpl implements OrderRepository {
                         rs.getString("status")
                 ));
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,3 +74,4 @@ public class OrderRepositoryImpl implements OrderRepository {
         return orders;
     }
 }
+//e
