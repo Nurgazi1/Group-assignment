@@ -10,9 +10,10 @@ public class Customers {
         this.name = name;
     }
 
-    public int getInt() {
+    public int getId() {
         return id;
     }
+
     public String getName() {
         return name;
     }
