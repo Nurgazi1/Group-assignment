@@ -3,6 +3,7 @@ package assignment3;
 import assignment3.Entities.Customers;
 import assignment3.Entities.MenuItem;
 import assignment3.Entities.Orders;
+import assignment3.patterns.singleton.DatabaseSingleton;
 import assignment3.database.db.PostgresDatabase;
 import assignment3.patterns.factory.Payment;
 import assignment3.patterns.factory.PaymentFactory;
@@ -12,9 +13,8 @@ import assignment3.repositories.OrderItemRepository;
 import assignment3.repositories.OrderRepository;
 import assignment3.repositoryImpl.CustomerRepositoryImpl;
 import assignment3.repositoryImpl.MenuItemRepositoryImpl;
-import assignment3.repositoryImpl.OrderRepositoryImpl;
-
 import assignment3.repositoryImpl.OrderItemRepositoryimpl;
+import assignment3.repositoryImpl.OrderRepositoryImpl;
 
 import java.util.List;
 import java.util.Scanner;
@@ -23,7 +23,7 @@ public class FoodSystem {
 
     private final Scanner scan = new Scanner(System.in);
 
-    private final PostgresDatabase db = new PostgresDatabase();
+    private final PostgresDatabase db = DatabaseSingleton.getInstance();
 
     private final MenuItemRepository menuRepo = new MenuItemRepositoryImpl(db);
     private final OrderRepository orderRepo = new OrderRepositoryImpl(db);
@@ -32,7 +32,7 @@ public class FoodSystem {
 
     public void run() {
         while (true) {
-            System.out.println("1. Print all Customers");
+            System.out.println("\n1. Print all Customers");
             System.out.println("2. Print all menu items (AVAILABLE ONLY) [LAMBDA]");
             System.out.println("3. Print all order items");
             System.out.println("4. Print all orders");
@@ -42,71 +42,60 @@ public class FoodSystem {
             int choice = scan.nextInt();
 
             switch (choice) {
-                case 1:
-                    PrintAllCustomers();
-                    break;
-                case 2:
-                    PrintAllMenuItems();
-                    break;
-                case 3:
-                    PrintAllOrderItems();
-                    break;
-                case 4:
-                    PrintAllOrders();
-                    break;
-                case 5:
-                    PayOrder();
-                    break;
-                case 0:
-                    Exit();
-                    break;
-                default:
-                    System.out.println("Invalid option");
+                case 1 -> printAllCustomers();
+                case 2 -> printAllMenuItems();
+                case 3 -> printAllOrderItems();
+                case 4 -> printAllOrders();
+                case 5 -> payOrder();
+                case 0 -> exit();
+                default -> System.out.println("Invalid option");
             }
         }
     }
 
-    private void Exit() {
+    private void exit() {
         System.exit(0);
     }
 
-    private void PrintAllOrders() {
+    private void printAllOrders() {
         List<Orders> orders = orderRepo.findAll();
+
         if (orders.isEmpty()) {
-            System.out.println("No Orders.");
-            System.out.println();
+            System.out.println("No orders.");
             return;
         }
 
         System.out.println("\n=== ORDERS ===");
         for (Orders o : orders) {
-            System.out.println(o.getId() + " | customer=" + o.getCustomerId() + " | status=" + o.getStatus());
+            System.out.println(
+                    o.getId() + " | customer=" + o.getCustomerId() + " | status=" + o.getStatus()
+            );
         }
-        System.out.println();
     }
 
-    private void PrintAllOrderItems() {
+    private void printAllOrderItems() {
         var items = orderItemRepo.findAll();
+
         if (items.isEmpty()) {
             System.out.println("No order items.");
-            System.out.println();
             return;
         }
 
         System.out.println("\n=== ORDER ITEMS ===");
-        items.forEach(item -> System.out.println(
-                "Order #" + item.getOrderId() +
-                        " | MenuItem #" + item.getMenuItemId() +
-                        " | Qty: " + item.getQuantity()
-        ));
-        System.out.println();
+        items.forEach(item ->
+                System.out.println(
+                        "Order #" + item.getOrderId() +
+                                " | MenuItem #" + item.getMenuItemId() +
+                                " | Qty: " + item.getQuantity()
+                )
+        );
     }
 
-    private void PrintAllMenuItems() {
+    private void printAllMenuItems() {
         List<MenuItem> menu = menuRepo.findAll();
+
         if (menu.isEmpty()) {
             System.out.println("No menu items.");
-            System.out.println();
             return;
         }
 
@@ -114,18 +103,20 @@ public class FoodSystem {
 
         menu.stream()
                 .filter(MenuItem::isAvailable)
-                .forEach(item -> System.out.println(
-                        item.getId() + " | " + item.getName() + " | " + item.getPrice()
-                ));
-
-        System.out.println();
+                .forEach(item ->
+                        System.out.println(
+                                item.getId() + " | " +
+                                        item.getName() + " | " +
+                                        item.getPrice()
+                        )
+                );
     }
 
-    private void PrintAllCustomers() {
+    private void printAllCustomers() {
         List<Customers> customers = customerRepo.findAll();
+
         if (customers.isEmpty()) {
             System.out.println("No customers.");
-            System.out.println();
             return;
         }
 
@@ -133,16 +124,19 @@ public class FoodSystem {
         for (Customers c : customers) {
             System.out.println(c.getId() + " | " + c.getName());
         }
-        System.out.println();
     }
 
-    private void PayOrder() {
+    private void payOrder() {
         Payment payment = PaymentFactory.create("CARD");
         payment.pay(1, 2500);
-        System.out.println();
     }
 
     public static void main(String[] args) {
         new FoodSystem().run();
     }
+    Orders order = new Orders.Builder()
+            .id(1)
+            .customerId(1)
+            .status("NEW")
+            .build();
 }

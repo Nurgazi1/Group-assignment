@@ -39,9 +39,5 @@ public class Main {
 
 //e
     }
-    Orders order = Orders.builder()
-            .id(1)
-            .customerId(1)
-            .status("NEW")
-            .build();
+
 }
