@@ -159,7 +159,6 @@ public class FoodSystem {
 
             orderRepo.save(order); // сохраняем orders
 
-            // сохраняем order_items (должен быть метод save(orderId, menuItemId, qty))
             orderItemRepo.save(order.getId(), menuItemId, quantity);
 
             System.out.println("Order created successfully!");

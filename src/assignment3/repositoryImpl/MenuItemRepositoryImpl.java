@@ -23,7 +23,6 @@ public class MenuItemRepositoryImpl implements MenuItemRepository {
         throw new UnsupportedOperationException("Not needed now");
     }
 
-    // ✅ ЭТО ОБЯЗАТЕЛЬНО НУЖНО (у тебя используется)
     @Override
     public List<MenuItem> findAll() {
         List<MenuItem> menu = new ArrayList<>();

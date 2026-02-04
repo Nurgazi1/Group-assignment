@@ -18,7 +18,6 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         this.db = db;
     }
 
-    // ✅ ОБЯЗАТЕЛЬНО (используется в FoodSystem)
     @Override
     public List<Customers> findAll() {
         List<Customers> customers = new ArrayList<>();
