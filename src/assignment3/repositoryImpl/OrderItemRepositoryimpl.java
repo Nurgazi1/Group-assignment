@@ -41,5 +41,18 @@ public class OrderItemRepositoryimpl implements OrderItemRepository {
 
         return items;
     }
+
+    @Override
+    public void save(int orderId, int menuItemId, int quantity) {
+        try (Connection con = db.getConnection()) {
+            String sql = "INSERT INTO order_items(order_id, menu_item_id, quantity) VALUES (?, ?, ?)";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, orderId);
+            ps.setInt(2, menuItemId);
+            ps.setInt(3, quantity);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
-//e

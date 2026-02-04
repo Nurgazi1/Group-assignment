@@ -18,6 +18,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         this.db = db;
     }
 
+    // ✅ ОБЯЗАТЕЛЬНО (используется в FoodSystem)
     @Override
     public List<Customers> findAll() {
         List<Customers> customers = new ArrayList<>();
@@ -28,10 +29,12 @@ public class CustomerRepositoryImpl implements CustomerRepository {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                customers.add(new Customers(
-                        rs.getInt("id"),
-                        rs.getString("name")
-                ));
+                customers.add(
+                        new Customers(
+                                rs.getInt("id"),
+                                rs.getString("name")
+                        )
+                );
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,5 +42,24 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
         return customers;
     }
+
+    @Override
+    public Customers findById(int id) {
+        try (Connection con = db.getConnection()) {
+            String sql = "SELECT * FROM customers WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new Customers(
+                        rs.getInt("id"),
+                        rs.getString("name")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
-//e

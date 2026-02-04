@@ -23,6 +23,7 @@ public class MenuItemRepositoryImpl implements MenuItemRepository {
         throw new UnsupportedOperationException("Not needed now");
     }
 
+    // ✅ ЭТО ОБЯЗАТЕЛЬНО НУЖНО (у тебя используется)
     @Override
     public List<MenuItem> findAll() {
         List<MenuItem> menu = new ArrayList<>();
@@ -46,5 +47,27 @@ public class MenuItemRepositoryImpl implements MenuItemRepository {
 
         return menu;
     }
+
+    @Override
+    public MenuItem findById(int id) {
+        try (Connection con = db.getConnection()) {
+            String sql = "SELECT * FROM menu_items WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new MenuItem(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getDouble("price"),
+                        rs.getBoolean("available")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }
-//e
