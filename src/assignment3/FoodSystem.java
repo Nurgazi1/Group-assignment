@@ -103,7 +103,7 @@ public class FoodSystem {
 
         menu.stream()
                 .filter(MenuItem::isAvailable)
-                .forEach(item ->
+                .forEach(item -> // lambdas
                         System.out.println(
                                 item.getId() + " | " +
                                         item.getName() + " | " +
@@ -128,7 +128,7 @@ public class FoodSystem {
 
     private void payOrder() {
         Payment payment = PaymentFactory.create("CARD");
-        payment.pay(1, 2500);
+        payment.pay(1, 2500); // factory
     }
 
     public static void main(String[] args) {
@@ -140,3 +140,4 @@ public class FoodSystem {
             .status("NEW")
             .build();
 }
+// builder
