@@ -39,5 +39,9 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
         return customers;
     }
+
+    @Override
+    public Customers findById(int id) {
+        return null;
+    }
 }
-//e

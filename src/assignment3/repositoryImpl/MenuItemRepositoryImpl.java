@@ -46,5 +46,9 @@ public class MenuItemRepositoryImpl implements MenuItemRepository {
 
         return menu;
     }
+
+    @Override
+    public MenuItem findById(int id) {
+        return null;
+    }
 }
-//e

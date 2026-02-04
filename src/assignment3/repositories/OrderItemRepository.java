@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface OrderItemRepository {
     List<OrderItem> findAll();
+    void save(OrderItem item);
 }
-//e
