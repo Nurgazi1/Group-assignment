@@ -23,7 +23,7 @@ public class FoodSystem {
 
     private final Scanner scan = new Scanner(System.in);
 
-    //  SINGLETON
+    //  singleton
     private final PostgresDatabase db = DatabaseSingleton.getInstance();
 
     private final MenuItemRepository menuRepo = new MenuItemRepositoryImpl(db);
@@ -88,7 +88,7 @@ public class FoodSystem {
         );
     }
 
-    //  LAMBDA STREAM
+    //  lambda stream
     private void printAllMenuItems() {
         List<MenuItem> menu = menuRepo.findAll();
         if (menu.isEmpty()) {
@@ -116,7 +116,7 @@ public class FoodSystem {
         }
     }
 
-    //  FACTORY
+    //  factory
     private void payOrder() {
         Payment payment = PaymentFactory.create("CARD");
         payment.pay(1, 2500);
@@ -157,7 +157,7 @@ public class FoodSystem {
                     .status("NEW")
                     .build();
 
-            orderRepo.save(order); // сохраняем orders
+            orderRepo.save(order); // orders
 
             orderItemRepo.save(order.getId(), menuItemId, quantity);
 
