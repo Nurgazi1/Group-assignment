@@ -31,7 +31,8 @@ public class OrderItemRepositoryimpl implements OrderItemRepository {
                 items.add(new OrderItem(
                         rs.getInt("id"),
                         rs.getInt("order_id"),
-                        rs.getInt("menu_item_id")
+                        rs.getInt("menu_item_id"),
+                        rs.getInt("quantity")
                 ));
             }
         } catch (Exception e) {
@@ -43,19 +44,17 @@ public class OrderItemRepositoryimpl implements OrderItemRepository {
 
 
     @Override
-    public void save(OrderItem item) {
+    public void save(int orderId, int menuItemId, int quantity) {
         try (Connection con = db.getConnection()) {
-            String sql = """
-            INSERT INTO order_items(order_id, menu_item_id, quantity)
-            VALUES (?, ?, ?)
-        """;
+            String sql = "INSERT INTO order_items(order_id, menu_item_id, quantity) VALUES (?, ?, ?)";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, item.getOrderId());
-            ps.setInt(2, item.getMenuItemId());
-            ps.setInt(3, item.getQuantity());
-            ps.execute();
+            ps.setInt(1, orderId);
+            ps.setInt(2, menuItemId);
+            ps.setInt(3, quantity);
+            ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 }
+//eе
