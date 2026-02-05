@@ -6,4 +6,3 @@ import assignment3.core.Repository;
 public interface MenuItemRepository extends Repository<MenuItem> {
     MenuItem findById(int id);
 }
-//e

@@ -6,7 +6,7 @@ public class OrderItem {
     private int menuItemId;
     private int quantity;
 
-    public OrderItem(int id, int orderId, int menuItemId, int quantity) {
+    public OrderItem(int id, int orderId, int menuItemId) {
         this.id = id;
         this.orderId = orderId;
         this.menuItemId = menuItemId;
