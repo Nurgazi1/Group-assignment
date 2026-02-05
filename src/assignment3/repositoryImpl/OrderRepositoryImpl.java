@@ -73,6 +73,27 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
+    public Orders findById(int id) {
+        try (Connection con = db.getConnection()) {
+            String sql = "SELECT * FROM orders WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Orders(
+                        rs.getInt("id"),
+                        rs.getInt("customer_id"),
+                        rs.getString("status")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public List<Orders> findAll() {
         List<Orders> orders = new ArrayList<>();
 

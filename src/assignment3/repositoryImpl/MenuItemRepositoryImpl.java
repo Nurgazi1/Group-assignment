@@ -25,15 +25,13 @@ public class MenuItemRepositoryImpl implements MenuItemRepository {
 
     @Override
     public List<MenuItem> findAll() {
-        List<MenuItem> menu = new ArrayList<>();
-
+        List<MenuItem> items = new ArrayList<>();
         try (Connection con = db.getConnection()) {
             String sql = "SELECT * FROM menu_items";
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
-                menu.add(new MenuItem(
+                items.add(new MenuItem(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getDouble("price"),
@@ -43,8 +41,7 @@ public class MenuItemRepositoryImpl implements MenuItemRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return menu;
+        return items;
     }
 
     @Override
@@ -54,7 +51,6 @@ public class MenuItemRepositoryImpl implements MenuItemRepository {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-
             if (rs.next()) {
                 return new MenuItem(
                         rs.getInt("id"),
