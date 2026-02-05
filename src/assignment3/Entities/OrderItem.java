@@ -10,7 +10,7 @@ public class OrderItem {
         this.id = id;
         this.orderId = orderId;
         this.menuItemId = menuItemId;
-        this.quantity = quantity;
+        this.quantity = this.quantity;
     }
 
     public int getId() { return id; }
@@ -18,4 +18,3 @@ public class OrderItem {
     public int getMenuItemId() { return menuItemId; }
     public int getQuantity() { return quantity; }
 }
-//e

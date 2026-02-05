@@ -50,6 +50,29 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
+    public int saveAndReturnId(Orders order) {
+        try (Connection con = db.getConnection()) {
+            String sql = """
+            INSERT INTO orders(customer_id, status)
+            VALUES (?, ?)
+            RETURNING id
+        """;
+
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, order.getCustomerId());
+            ps.setString(2, order.getStatus());
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        throw new RuntimeException("Failed to create order");
+    }
+
+    @Override
     public List<Orders> findAll() {
         List<Orders> orders = new ArrayList<>();
 
@@ -60,11 +83,13 @@ public class OrderRepositoryImpl implements OrderRepository {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                orders.add(new Orders(
-                        rs.getInt("id"),
-                        rs.getInt("customer_id"),
-                        rs.getString("status")
-                ));
+                orders.add(
+                        new Orders(
+                                rs.getInt("id"),
+                                rs.getInt("customer_id"),
+                                rs.getString("status")
+                        )
+                );
             }
 
         } catch (Exception e) {

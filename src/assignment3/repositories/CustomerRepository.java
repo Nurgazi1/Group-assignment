@@ -7,5 +7,6 @@ public interface CustomerRepository {
     List<Customers> findAll();
     Customers findById(int id);
 
+    void save(Customers customer);
 }
 

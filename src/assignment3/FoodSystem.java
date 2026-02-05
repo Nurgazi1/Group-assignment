@@ -7,7 +7,6 @@ import assignment3.Entities.Orders;
 import assignment3.exception.InvalidQuantityException;
 import assignment3.exception.MenuItemNotAvailableException;
 import assignment3.exception.NotFoundException;
-import assignment3.exception.OrderNotFoundException;
 import assignment3.patterns.singleton.DatabaseSingleton;
 import assignment3.database.db.PostgresDatabase;
 import assignment3.patterns.factory.Payment;
@@ -41,8 +40,9 @@ public class FoodSystem {
             System.out.println("2. Print all menu items (AVAILABLE ONLY) [LAMBDA]");
             System.out.println("3. Print all order items");
             System.out.println("4. Print all orders");
-            System.out.println("5. Pay order (Factory)");
-            System.out.println("6. Create order");
+            System.out.println("5. Pay order");
+            System.out.println("6. Create customer");
+            System.out.println("7. Create order");
             System.out.println("0. Exit");
 
             int choice = scan.nextInt();
@@ -64,7 +64,10 @@ public class FoodSystem {
                     payOrder();
                     break;
                 case 6:
-                    CreateOrder();
+                    createCustomer();
+                    break;
+                case 7:
+                    createOrder();
                     break;
                 case 0:
                     exit();
@@ -75,7 +78,23 @@ public class FoodSystem {
         }
     }
 
-    private void CreateOrder() {
+    private void createCustomer() {
+        System.out.print("Enter customer name: ");
+        scan.nextLine();
+        String name = scan.nextLine();
+
+        if (name.isBlank()) {
+            System.out.println("Name cannot be empty");
+            return;
+        }
+
+        Customers customer = new Customers(name);
+        customerRepo.save(customer);
+
+        System.out.println("Customer created successfully!");
+    }
+
+    private void createOrder() {
         try {
             System.out.print("Enter customer id: ");
             int customerId = scan.nextInt();
@@ -84,8 +103,9 @@ public class FoodSystem {
             if (customer == null)
                 throw new NotFoundException("Customer not found");
 
-            Orders order = new Orders(0, customerId, "NEW");
-            orderRepo.save(order);
+            Orders order = new Orders(customerId, "NEW");
+
+            int orderId = orderRepo.saveAndReturnId(order);
 
             System.out.print("Enter menu item id: ");
             int menuItemId = scan.nextInt();
@@ -93,25 +113,26 @@ public class FoodSystem {
             MenuItem item = menuRepo.findById(menuItemId);
             if (item == null)
                 throw new NotFoundException("Menu item not found");
-
             if (!item.isAvailable())
-                throw new MenuItemNotAvailableException("Menu item is not available");
+                throw new MenuItemNotAvailableException("Menu item not available");
 
             System.out.print("Quantity: ");
             int qty = scan.nextInt();
-
             if (qty <= 0)
-                throw new InvalidQuantityException("Quantity must be greater than 0");
+                throw new InvalidQuantityException("Quantity must be > 0");
 
-            OrderItem orderItem = new OrderItem(order.getId(), menuItemId, qty);
+            OrderItem orderItem =
+                    new OrderItem(orderId, menuItemId, qty);
             orderItemRepo.save(orderItem);
 
             System.out.println("Order created successfully!");
 
-        } catch (OrderNotFoundException e) {
-            System.out.println("Error. " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
+
+
 
     private void exit() {
         System.exit(0);
