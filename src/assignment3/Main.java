@@ -37,7 +37,6 @@ public class Main {
 
         System.out.println("Order created and completed successfully");
 
-//eе
     }
 
 }

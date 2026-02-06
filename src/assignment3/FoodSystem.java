@@ -5,6 +5,7 @@ import assignment3.database.db.PostgresDatabase;
 import assignment3.exception.InvalidQuantityException;
 import assignment3.exception.MenuItemNotAvailableException;
 import assignment3.exception.NotFoundException;
+import assignment3.exception.OrderNotFoundException;
 import assignment3.patterns.factory.Payment;
 import assignment3.patterns.factory.PaymentFactory;
 import assignment3.patterns.singleton.DatabaseSingleton;
@@ -77,7 +78,7 @@ public class FoodSystem {
 
             Orders order = orderRepo.findById(orderId);
             if (order == null) {
-                throw new NotFoundException("Order not found");
+                throw new OrderNotFoundException("Order not found");
             }
 
             double total = orderItemRepo.calculateTotalByOrderId(orderId);
