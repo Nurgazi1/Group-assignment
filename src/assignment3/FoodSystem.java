@@ -1,28 +1,22 @@
 package assignment3;
 
-import assignment3.Entities.Customers;
-import assignment3.Entities.MenuItem;
-import assignment3.Entities.Orders;
-import assignment3.patterns.singleton.DatabaseSingleton;
+import assignment3.Entities.*;
 import assignment3.database.db.PostgresDatabase;
+import assignment3.exception.InvalidQuantityException;
+import assignment3.exception.MenuItemNotAvailableException;
+import assignment3.exception.NotFoundException;
+import assignment3.exception.OrderNotFoundException;
 import assignment3.patterns.factory.Payment;
 import assignment3.patterns.factory.PaymentFactory;
-import assignment3.repositories.CustomerRepository;
-import assignment3.repositories.MenuItemRepository;
-import assignment3.repositories.OrderItemRepository;
-import assignment3.repositories.OrderRepository;
-import assignment3.repositoryImpl.CustomerRepositoryImpl;
-import assignment3.repositoryImpl.MenuItemRepositoryImpl;
-import assignment3.repositoryImpl.OrderItemRepositoryimpl;
-import assignment3.repositoryImpl.OrderRepositoryImpl;
+import assignment3.patterns.singleton.DatabaseSingleton;
+import assignment3.repositories.*;
+import assignment3.repositoryImpl.*;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class FoodSystem {
-
     private final Scanner scan = new Scanner(System.in);
-
     private final PostgresDatabase db = DatabaseSingleton.getInstance();
 
     private final MenuItemRepository menuRepo = new MenuItemRepositoryImpl(db);
@@ -32,111 +26,147 @@ public class FoodSystem {
 
     public void run() {
         while (true) {
-            System.out.println("\n1. Print all Customers");
-            System.out.println("2. Print all menu items (AVAILABLE ONLY) [LAMBDA]");
-            System.out.println("3. Print all order items");
-            System.out.println("4. Print all orders");
-            System.out.println("5. Pay order (Factory)");
-            System.out.println("0. Exit");
+            System.out.println("""
+                1. Print customers
+                2. Print menu
+                3. Print order items
+                4. Print orders
+                5. Create customer
+                6. Create order
+                7. Pay order
+                0. Exit
+            """);
 
             int choice = scan.nextInt();
 
             switch (choice) {
-                case 1 -> printAllCustomers();
-                case 2 -> printAllMenuItems();
-                case 3 -> printAllOrderItems();
-                case 4 -> printAllOrders();
-                case 5 -> payOrder();
-                case 0 -> exit();
-                default -> System.out.println("Invalid option");
+                case 1:
+                    printAllCustomers();
+                    break;
+                case 2:
+                    printAllMenuItems();
+                    break;
+                case 3:
+                    printAllOrderItems();
+                    break;
+                case 4:
+                    printAllOrders();
+                    break;
+                case 5:
+                    createCustomer();
+                    break;
+                case 6:
+                    createOrder();
+                    break;
+                case 7:
+                    payOrder();
+                    break;
+                case 0:
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid option");
+                    break;
             }
         }
     }
 
-    private void exit() {
-        System.exit(0);
+    private void payOrder() {
+        try {
+            System.out.print("Enter order id: ");
+            int orderId = scan.nextInt();
+
+            Orders order = orderRepo.findById(orderId);
+            if (order == null) {
+                throw new OrderNotFoundException("Order not found");
+            }
+
+            double total = orderItemRepo.calculateTotalByOrderId(orderId);
+            if (total <= 0) {
+                throw new RuntimeException("Order has no items");
+            }
+
+            System.out.print("Payment type (CARD / CASH): ");
+            scan.nextLine();
+            String type = scan.nextLine();
+
+            Payment payment = PaymentFactory.create(type);
+            payment.pay(orderId, total);
+
+            orderRepo.complete(orderId);
+            System.out.println("Order paid successfully!");
+
+        } catch (Exception e) {
+            System.out.println("Payment error: " + e.getMessage());
+        }
     }
 
-    private void printAllOrders() {
-        List<Orders> orders = orderRepo.findAll();
 
-        if (orders.isEmpty()) {
-            System.out.println("No orders.");
-            return;
-        }
-
-        System.out.println("\n=== ORDERS ===");
-        for (Orders o : orders) {
-            System.out.println(
-                    o.getId() + " | customer=" + o.getCustomerId() + " | status=" + o.getStatus()
-            );
-        }
+    private void createCustomer() {
+        scan.nextLine();
+        System.out.print("Enter name: ");
+        String name = scan.nextLine();
+        customerRepo.save(new Customers(name));
+        System.out.println("Customer created");
     }
 
-    private void printAllOrderItems() {
-        var items = orderItemRepo.findAll();
+    private void createOrder() {
+        try {
+            System.out.print("Customer id: ");
+            int customerId = scan.nextInt();
+            if (customerRepo.findById(customerId) == null)
+                throw new NotFoundException("Customer not found");
 
-        if (items.isEmpty()) {
-            System.out.println("No order items.");
-            return;
+            Orders order = new Orders(customerId, "NEW");
+            int orderId = orderRepo.saveAndReturnId(order);
+
+            System.out.print("Menu item id: ");
+            int menuItemId = scan.nextInt();
+            MenuItem item = menuRepo.findById(menuItemId);
+
+            if (item == null)
+                throw new NotFoundException("Menu item not found");
+            if (!item.isAvailable())
+                throw new MenuItemNotAvailableException("Item not available");
+
+            System.out.print("Quantity: ");
+            int qty = scan.nextInt();
+            if (qty <= 0)
+                throw new InvalidQuantityException("Invalid quantity");
+
+            orderItemRepo.save(new OrderItem(orderId, menuItemId, qty));
+            System.out.println("Order created");
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
-
-        System.out.println("\n=== ORDER ITEMS ===");
-        items.forEach(item ->
-                System.out.println(
-                        "Order #" + item.getOrderId() +
-                                " | MenuItem #" + item.getMenuItemId() +
-                                " | Qty: " + item.getQuantity()
-                )
-        );
-    }
-
-    private void printAllMenuItems() {
-        List<MenuItem> menu = menuRepo.findAll();
-
-        if (menu.isEmpty()) {
-            System.out.println("No menu items.");
-            return;
-        }
-
-        System.out.println("\n=== AVAILABLE MENU ITEMS ===");
-
-        menu.stream()
-                .filter(MenuItem::isAvailable)
-                .forEach(item ->
-                        System.out.println(
-                                item.getId() + " | " +
-                                        item.getName() + " | " +
-                                        item.getPrice()
-                        )
-                );
     }
 
     private void printAllCustomers() {
-        List<Customers> customers = customerRepo.findAll();
-
-        if (customers.isEmpty()) {
-            System.out.println("No customers.");
-            return;
-        }
-
-        System.out.println("\n=== CUSTOMERS ===");
-        for (Customers c : customers) {
-            System.out.println(c.getId() + " | " + c.getName());
-        }
+        customerRepo.findAll()
+                .forEach(c -> System.out.println(c.getId() + " | " + c.getName()));
     }
 
-    private void payOrder() {
-        Payment payment = PaymentFactory.create("CARD");
-        payment.pay(1, 2500);
+    private void printAllMenuItems() {
+        menuRepo.findAll().stream()
+                .filter(MenuItem::isAvailable)
+                .forEach(m -> System.out.println(m.getId() + " | " + m.getName()));
+    }
+
+    private void printAllOrders() {
+        orderRepo.findAll()
+                .forEach(o -> System.out.println(o.getId() + " | customer=" + o.getCustomerId()));
+    }
+
+    private void printAllOrderItems() {
+        orderItemRepo.findAll()
+                .forEach(i -> System.out.println(
+                        "Order " + i.getOrderId() +
+                                " | Item " + i.getMenuItemId() +
+                                " | Qty " + i.getQuantity()));
     }
 
     public static void main(String[] args) {
         new FoodSystem().run();
     }
-    Orders order = new Orders.Builder()
-            .id(1)
-            .customerId(1)
-            .status("NEW")
-            .build();
 }

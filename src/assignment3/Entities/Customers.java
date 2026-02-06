@@ -5,8 +5,8 @@ public class Customers {
     private String name;
 
 
-    public Customers(int id, String name) {
-        this.id = id;
+    public Customers(String name) {
+        this.id = this.id;
         this.name = name;
     }
 
@@ -18,4 +18,3 @@ public class Customers {
         return name;
     }
 }
-//e

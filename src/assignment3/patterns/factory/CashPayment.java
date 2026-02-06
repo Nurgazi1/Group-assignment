@@ -6,5 +6,3 @@ public class CashPayment implements Payment {
         System.out.println("CASH payment for Order#" + orderId + ", amount=" + amount);
     }
 }
-
-//e

@@ -6,4 +6,3 @@ public class CardPayment implements Payment {
         System.out.println("CARD payment for Order#" + orderId + ", amount=" + amount);
     }
 }
-//e

@@ -23,5 +23,3 @@ public class MenuItem {
         return id + " | " + name + " | " + price + " | available: " + available;
     }
 }
-
-//e
