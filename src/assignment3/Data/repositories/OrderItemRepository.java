@@ -1,6 +1,6 @@
-package assignment3.repositories;
+package assignment3.Data.repositories;
 
-import assignment3.Entities.OrderItem;
+import assignment3.Domain.Entities.OrderItem;
 import java.util.List;
 
 public interface OrderItemRepository {

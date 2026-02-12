@@ -1,4 +1,4 @@
-package assignment3.Entities;
+package assignment3.Domain.Entities;
 
 public class Customers {
     private int id;

@@ -1,6 +1,6 @@
-package assignment3.repositories;
+package assignment3.Data.repositories;
 
-import assignment3.Entities.Customers;
+import assignment3.Domain.Entities.Customers;
 import java.util.List;
 
 public interface CustomerRepository {

@@ -1,4 +1,4 @@
-package assignment3.database.db;
+package assignment3.Data.repositories;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,20 +7,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class PostgresDatabase implements IDatabase {
+public class DatabaseConnection {
 
     private static final String URL =
             "jdbc:postgresql://aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres?sslmode=require";
-
     private static final String USER =
             "postgres.axcgckktfembduyzkvrs";
 
     private static final String PASSWORD = loadPassword();
 
-    @Override
-    public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
-    }
+    private DatabaseConnection() {}
 
     private static String loadPassword() {
         Properties props = new Properties();
@@ -31,5 +27,10 @@ public class PostgresDatabase implements IDatabase {
             throw new RuntimeException("Cannot read config.properties", e);
         }
     }
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
 }
-//e
+
+

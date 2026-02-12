@@ -1,4 +1,4 @@
-package assignment3.core;
+package assignment3.Data.repositories.core;
 
 import java.util.List;
 

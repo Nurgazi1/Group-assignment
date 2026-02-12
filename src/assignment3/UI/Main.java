@@ -1,10 +1,6 @@
-package assignment3;
+package assignment3.UI;
 
-import assignment3.database.db.PostgresDatabase;
-import assignment3.Entities.Orders;
-import assignment3.repositories.OrderRepository;
-import assignment3.repositoryImpl.OrderRepositoryImpl;
-import assignment3.service.OrderService;
+import assignment3.Data.repositories.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

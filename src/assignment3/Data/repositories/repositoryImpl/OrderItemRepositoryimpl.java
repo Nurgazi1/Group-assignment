@@ -1,8 +1,8 @@
-package assignment3.repositoryImpl;
+package assignment3.Data.repositories.repositoryImpl;
 
-import assignment3.Entities.OrderItem;
-import assignment3.database.db.IDatabase;
-import assignment3.repositories.OrderItemRepository;
+import assignment3.Domain.Entities.OrderItem;
+import assignment3.Data.repositories.db.IDatabase;
+import assignment3.Data.repositories.OrderItemRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

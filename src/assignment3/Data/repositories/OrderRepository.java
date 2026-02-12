@@ -1,7 +1,7 @@
-package assignment3.repositories;
+package assignment3.Data.repositories;
 
-import assignment3.Entities.Orders;
-import assignment3.core.Repository;
+import assignment3.Domain.Entities.Orders;
+import assignment3.Data.repositories.core.Repository;
 
 import java.util.List;
 

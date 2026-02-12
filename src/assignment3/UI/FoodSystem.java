@@ -1,7 +1,7 @@
-package assignment3;
+package assignment3.UI;
 
-import assignment3.Entities.*;
-import assignment3.database.db.PostgresDatabase;
+import assignment3.Domain.Entities.*;
+import assignment3.Data.repositories.db.PostgresDatabase;
 import assignment3.exception.InvalidQuantityException;
 import assignment3.exception.MenuItemNotAvailableException;
 import assignment3.exception.NotFoundException;
@@ -9,10 +9,9 @@ import assignment3.exception.OrderNotFoundException;
 import assignment3.patterns.factory.Payment;
 import assignment3.patterns.factory.PaymentFactory;
 import assignment3.patterns.singleton.DatabaseSingleton;
-import assignment3.repositories.*;
-import assignment3.repositoryImpl.*;
+import assignment3.Data.repositories.*;
+import assignment3.Data.repositories.repositoryImpl.*;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class FoodSystem {

@@ -1,7 +1,7 @@
 package assignment3.patterns.singleton;
 
 
-import assignment3.database.db.PostgresDatabase;
+import assignment3.Data.repositories.db.PostgresDatabase;
 
 public class DatabaseSingleton {
 

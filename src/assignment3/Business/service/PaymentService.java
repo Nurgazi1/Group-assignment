@@ -1,4 +1,4 @@
-package assignment3.service;
+package assignment3.Business.service;
 
 public class PaymentService {
     public void pay(int orderId, double amount) {
