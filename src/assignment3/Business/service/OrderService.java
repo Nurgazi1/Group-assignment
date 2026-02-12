@@ -1,7 +1,7 @@
-package assignment3.service;
+package assignment3.Business.service;
 
-import assignment3.Entities.Orders;
-import assignment3.repositories.OrderRepository;
+import assignment3.Domain.Entities.Orders;
+import assignment3.Data.repositories.OrderRepository;
 
 public class OrderService {
     private final OrderRepository orderRepository;
@@ -18,4 +18,3 @@ public class OrderService {
         orderRepository.complete(id);
     }
 }
-//e

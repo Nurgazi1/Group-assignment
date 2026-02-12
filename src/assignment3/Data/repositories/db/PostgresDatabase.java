@@ -1,4 +1,4 @@
-package assignment3.database.db;
+package assignment3.Data.repositories.db;
 
 import java.io.FileInputStream;
 import java.io.IOException;

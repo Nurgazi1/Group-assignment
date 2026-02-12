@@ -1,8 +1,8 @@
-package assignment3.repositoryImpl;
+package assignment3.Data.repositories.repositoryImpl;
 
-import assignment3.database.db.IDatabase;
-import assignment3.Entities.MenuItem;
-import assignment3.repositories.MenuItemRepository;
+import assignment3.Data.repositories.db.IDatabase;
+import assignment3.Domain.Entities.MenuItem;
+import assignment3.Data.repositories.MenuItemRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,15 +25,13 @@ public class MenuItemRepositoryImpl implements MenuItemRepository {
 
     @Override
     public List<MenuItem> findAll() {
-        List<MenuItem> menu = new ArrayList<>();
-
+        List<MenuItem> items = new ArrayList<>();
         try (Connection con = db.getConnection()) {
             String sql = "SELECT * FROM menu_items";
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
-                menu.add(new MenuItem(
+                items.add(new MenuItem(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getDouble("price"),
@@ -43,8 +41,28 @@ public class MenuItemRepositoryImpl implements MenuItemRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return menu;
+        return items;
     }
+
+    @Override
+    public MenuItem findById(int id) {
+        try (Connection con = db.getConnection()) {
+            String sql = "SELECT * FROM menu_items WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new MenuItem(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getDouble("price"),
+                        rs.getBoolean("available")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
-//e

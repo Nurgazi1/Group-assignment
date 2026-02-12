@@ -1,10 +1,14 @@
-package assignment3.Entities;
+package assignment3.Domain.Entities;
 
 public class Orders {
-
     private int id;
     private int customerId;
     private String status;
+
+    public Orders(int customerId, String status) {
+        this.customerId = customerId;
+        this.status = status;
+    }
 
     public Orders(int id, int customerId, String status) {
         this.id = id;
@@ -23,7 +27,6 @@ public class Orders {
     public String getStatus() {
         return status;
     }
-
 
     public static class Builder {
         private int id;
@@ -50,19 +53,3 @@ public class Orders {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

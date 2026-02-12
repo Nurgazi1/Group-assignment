@@ -1,4 +1,4 @@
-package assignment3.Entities;
+package assignment3.Domain.Entities;
 
 public class MenuItem {
     private int id;
@@ -23,5 +23,3 @@ public class MenuItem {
         return id + " | " + name + " | " + price + " | available: " + available;
     }
 }
-
-//e
